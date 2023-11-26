@@ -1,7 +1,11 @@
 import { Button, Col, Container, Grid, Panel, Row } from "rsuite";
 import { auth, database } from "../misc/firebase";
-import { GoogleAuthProvider, signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
-import { ref, serverTimestamp, set} from "firebase/database";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  getAdditionalUserInfo,
+} from "firebase/auth";
+import { ref, serverTimestamp, set } from "firebase/database";
 
 const SignIn = () => {
   const onGoogleSignIn = async () => {
@@ -10,8 +14,7 @@ const SignIn = () => {
       .then((result) => {
         const { isNewUser } = getAdditionalUserInfo(result);
         if (isNewUser) {
-          const userProfileRef = ref(database, `/profiles/${result.user.uid}`);
-          set(userProfileRef, {
+          set(ref(database, `/profiles/${result.user.uid}`), {
             name: result.user.displayName,
             createdAt: serverTimestamp(),
           });
